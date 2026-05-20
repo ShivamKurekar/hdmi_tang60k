@@ -11,8 +11,8 @@ module dvi_tx_tmds_phy(
 	
 	wire dq_tmds;
 	
-	always@(posedge pixel_clock)begin
-		if(reset)begin
+	always@(posedge pixel_clock or negedge reset)begin
+		if(!reset)begin
 			reset_reg <= 1'b1;
 		end else begin
 			reset_reg <= 1'b0;

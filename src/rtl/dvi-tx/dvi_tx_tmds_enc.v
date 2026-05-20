@@ -38,9 +38,9 @@ module dvi_tx_tmds_enc(
 	
 	
 	/////////////////////////////////////////////////////////////
-	always@(posedge clock)begin
+	always@(posedge clock or negedge reset)begin
 		
-		if(reset)begin
+		if(!reset)begin
 			data_reg <= 0;
 			ctrl_reg <= 0;
 			den_reg <= 0;

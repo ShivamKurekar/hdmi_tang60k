@@ -56,9 +56,9 @@ module video_timing_ctrl #(
 	reg					ext_sync_last;
 	reg					ext_sync_curr;
 	
-	always@(posedge pixel_clock)begin
+	always@(posedge pixel_clock or negedge reset)begin
 		
-		if(reset)begin
+		if(!reset)begin
 			
 			h_pos <= 0;
 			v_pos <= 0;

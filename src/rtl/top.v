@@ -40,7 +40,7 @@ module top_mod (
     dvi_tx_top dvi_tx_top_inst0 (
         .pixel_clock  (clk_p),
         .ddr_bit_clock(clk_p5),
-        .reset        (~rstn),
+        .reset        (rstn),
         .den          (dvi_den),
         .hsync        (dvi_hsync),
         .vsync        (dvi_vsync),
