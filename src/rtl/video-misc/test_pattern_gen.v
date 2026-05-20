@@ -1,27 +1,10 @@
 `timescale 1ns / 1ns
 
-module test_pattern_gen #(
-	
-	parameter video_hlength		= 2200,// Total H length
-	parameter video_vlength		= 1125,// Total v length
-	parameter video_hsync_pol	= 1,   // 
-	parameter video_hsync_len	= 44,  // HSYNC pulse width
-	parameter video_hbp_len		= 148, // horizontal backporch
-	
-	parameter video_h_visible	= 1920,// horizontal visible
-	parameter video_vsync_pol	= 1,   
-	parameter video_vsync_len	= 5,   // VSYNC pulse width
-	parameter video_vbp_len		= 36,  // vertical back porch
-	parameter video_v_visible	= 1080 // vertical visible
-)
-(
-	input				pixel_clock,
-	input				reset,
-	
-	output				video_vsync,
-	output				video_hsync,
-	output				video_den,
-	output				video_line_start,
+module test_pattern_gen (
+	input				den_int,
+	input	[13	: 0]	pixel_x,
+	input	[13	: 0]	pixel_y,
+
 	output	[23 : 0]	video_pixel_even,
 	output	[23 : 0]	video_pixel_odd
 );
@@ -41,9 +24,6 @@ module test_pattern_gen #(
 	
 	reg		[23 : 0]	pattern_colours_t [15 : 0];
 	
-	wire				den_int;
-	wire	[13 : 0]	pixel_x;
-	wire	[13 : 0]	pixel_y;
 	
 	initial begin
 		// Color Format = 			 R__G__B
@@ -73,38 +53,5 @@ module test_pattern_gen #(
 	assign video_pixel_odd = (den_int) ? pattern_value : 24'h000000;
 	
 	assign video_den = den_int;
-	
-	// First pixel @(h_pos, v_pos) = (192,41)
-	video_timing_ctrl #(
-		
-		.video_hlength(video_hlength),
-		.video_vlength(video_vlength),
-		
-		.video_hsync_pol(video_hsync_pol),
-		.video_hsync_len(video_hsync_len),
-		.video_hbp_len(video_hbp_len),
-		.video_h_visible(video_h_visible),
-		
-		.video_vsync_pol(video_vsync_pol),
-		.video_vsync_len(video_vsync_len),
-		.video_vbp_len(video_vbp_len),
-		.video_v_visible(video_v_visible)
-		
-	)video_timing_ctrl_inst0(
-		
-		.pixel_clock		(pixel_clock),
-		.reset				(reset),
-		.ext_sync			(1'b0),
-		
-		.timing_h_pos		(),
-		.timing_v_pos		(),
-		.pixel_x			(pixel_x),
-		.pixel_y			(pixel_y),
-		
-		.video_vsync		(video_vsync),
-		.video_hsync		(video_hsync),
-		.video_den			(den_int),
-		.video_line_start	(video_line_start)
-	);
-	
+
 endmodule

@@ -1,7 +1,7 @@
 module dvi_tx_tmds_enc(
 	
 	input					clock,
-	input					reset,
+	input					rstn,
 	
 	input					den,
 	input		[7 : 0]		data,
@@ -38,9 +38,9 @@ module dvi_tx_tmds_enc(
 	
 	
 	/////////////////////////////////////////////////////////////
-	always@(posedge clock or negedge reset)begin
+	always@(posedge clock or negedge rstn)begin
 		
-		if(!reset)begin
+		if(!rstn)begin
 			data_reg <= 0;
 			ctrl_reg <= 0;
 			den_reg <= 0;

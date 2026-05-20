@@ -2,7 +2,7 @@ module dvi_tx_top(
 
     input				pixel_clock,
     input				ddr_bit_clock,
-    input				reset,
+    input				rstn,
 
     input				den,
     input				hsync,
@@ -32,36 +32,35 @@ module dvi_tx_top(
 
     genvar i;
 
-    for(i = 0; i < 3; i = i + 1)
-	begin : gen_enc
+    for(i = 0; i < 3; i = i + 1) begin : gen_enc
 
-		dvi_tx_tmds_enc dvi_tx_tmds_enc_inst(
+      dvi_tx_tmds_enc dvi_tx_tmds_enc_inst(
 
-			.clock		(pixel_clock),
-			.reset		(reset),
+        .clock		(pixel_clock),
+        .rstn		  (rstn),
 
-			.den		(den),
-			.data		(pixel_data[(8*i) +: 8]),
-			.ctrl		(ctrl[(2*i) +: 2]),
-			.tmds		(tmds_enc[(10*i) +: 10])
-		);
+        .den		  (den),
+        .data		  (pixel_data[(8*i) +: 8]),
+        .ctrl		  (ctrl[(2*i) +: 2]),
+        .tmds		  (tmds_enc[(10*i) +: 10])
+      );
 
-		dvi_tx_tmds_phy dvi_tx_tmds_phy_inst(
+      dvi_tx_tmds_phy dvi_tx_tmds_phy_inst(
 
-			.pixel_clock		(pixel_clock),
-			.ddr_bit_clock		(ddr_bit_clock),
-			.reset				(reset),
-			.data				(tmds_enc[(10*i) +: 10]),
-			.tmds_lane			(data_out_to_pins[i])
-		);
+        .pixel_clock		  (pixel_clock),
+        .ddr_bit_clock		(ddr_bit_clock),
+        .rstn				      (rstn),
+        
+        .data				      (tmds_enc[(10*i) +: 10]),
+        .tmds_lane			  (data_out_to_pins[i])
+      );
     end
 
   endgenerate
 
   dvi_tx_clk_drv clock_phy(
-
-                   .pixel_clock	(pixel_clock),
-                   .tmds_clk		(tmds_clk)
-                 );
+    .pixel_clock	(pixel_clock),
+    .tmds_clk		(tmds_clk)
+  );
 
 endmodule

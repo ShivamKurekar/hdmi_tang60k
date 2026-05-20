@@ -2,7 +2,7 @@ module dvi_tx_tmds_phy(
 	
 	input				pixel_clock,
 	input				ddr_bit_clock,
-	input				reset,
+	input				rstn,
 	input	[9 : 0]		data,
 	output	[1 : 0]		tmds_lane
 );
@@ -11,8 +11,8 @@ module dvi_tx_tmds_phy(
 	
 	wire dq_tmds;
 	
-	always@(posedge pixel_clock or negedge reset)begin
-		if(!reset)begin
+	always@(posedge pixel_clock or negedge rstn)begin
+		if(!rstn)begin
 			reset_reg <= 1'b1;
 		end else begin
 			reset_reg <= 1'b0;
